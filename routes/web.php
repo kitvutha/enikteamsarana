@@ -20,6 +20,15 @@ Route::get('/',
     }
 );
 
+Route::get('/connnection', 
+    function () {
+        $server = "127.0.0.1";
+        $username = "root";
+        $password = "";
+        $conn = new mysqli($server, $username, $password) OR ("Connection failed " . $conn -> error);
+    }
+);
+
 Route::get('/clearcache', function () {
     $exitCode = Artisan::call('config:clear');
     $exitCode = Artisan::call('cache:clear');

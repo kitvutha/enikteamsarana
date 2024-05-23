@@ -55,6 +55,7 @@ Route::group(['middleware' => 'api'], function ($router) {
         Route::get('show-subcategory-posts/{subcategory_id}', [ProductPostController::class, 'showSubCategoryPosts']);
         Route::get('show-category-posts/{category_id}', [ProductPostController::class, 'showCategoryPosts']);
         Route::get('show-city-posts/{city_id}', [ProductPostController::class, 'showCityPosts']);
+        Route::get('/search', [ProductRequestController::class, 'searchProduct']);
         
         // Only For Authenticated Users
         Route::post('store', [ProductPostController::class, 'store']);
@@ -78,6 +79,7 @@ Route::group(['middleware' => 'api'], function ($router) {
         Route::post('deactivate', [ProductRequestController::class, 'deactivate']);
         Route::post('activate', [ProductRequestController::class, 'activate']);
         Route::post('delete', [ProductRequestController::class, 'destroy']);
+
     });
 
     // Manage Posts + Requests Routes group

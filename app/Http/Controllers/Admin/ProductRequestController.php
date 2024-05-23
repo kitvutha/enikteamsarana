@@ -67,4 +67,9 @@ class ProductRequestController extends Controller
         $prod_req->subcategory = $prod_req->SubCategory->title;
         return $prod_req;
     }
+    public function searchProduct (Request $request){
+        $search = $request->get('search');
+        $result = ProductRequest::where('title','like',"%{$search}%")->get();
+        return response()->json(['success' => true, 'message' => 'All Product Requests', 'data' => $result], 200);
+    }
 }

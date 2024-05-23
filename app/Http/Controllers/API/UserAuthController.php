@@ -211,7 +211,7 @@ class UserAuthController extends Controller
             $user->otp = NULL;
         }
         $city = City::where('id', $data['city'])->first();
-        $user->city_id;
+        $user->city_id = $city->id;
         $user->address = $data['address'];
         $user->zip = $data['zip'];
         $query = $user->save();
