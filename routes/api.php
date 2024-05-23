@@ -22,6 +22,8 @@ Route::group(['middleware' => 'api'], function ($router) {
     Route::post('send-register-otp', [UserAuthController::class, 'sendRegisterOTP']);
     Route::post('register', [UserAuthController::class, 'register']);
     Route::post('update-profile', [UserAuthController::class, 'update_profile']);
+    Route::post('setup-account-profile', [UserAuthController::class, 'update_profile_account_set_up']);
+    Route::post('pin-account', [UserAuthController::class, 'setupPinUserAccount']);
     Route::post('send-update-phone-otp', [UserAuthController::class, 'send_update_phone_otp']);
     Route::post('update-password', [UserAuthController::class, 'update_password']);
     Route::post('login', [UserAuthController::class, 'login']);
