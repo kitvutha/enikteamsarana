@@ -248,4 +248,9 @@ class ProductRequestController extends Controller
         }
         return $prod_reqs;
     }
+    public function searchProduct (Request $request){
+        $search = $request->get('search');
+        $result = ProductRequest::where('title','like',"%{$search}%")->get();
+        return response()->json(['success' => true, 'message' => 'All Product Requests', 'data' => $result], 200);
+    }
 }

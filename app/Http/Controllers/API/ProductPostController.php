@@ -254,6 +254,12 @@ class ProductPostController extends Controller
             'message' => 'Product Post Deleted Successfully'
         ], 200);
     }
+    
+    public function searchProductPost (Request $request){
+        $search = $request->get('search');
+        $result = ProductPost::where('title','like',"%{$search}%")->get();
+        return response()->json(['success' => true, 'message' => 'All Product Requests', 'data' => $result], 200);
+    }
     public function addInformation($posts)
     {
         foreach ($posts as $post) {

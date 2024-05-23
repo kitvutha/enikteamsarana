@@ -12,7 +12,6 @@ Route::group(['prefix'  =>  'admin'], function () {
 	Route::get('login', [AdminLoginController::class, 'index'])->name('login');
 	Route::post('verify_login', [AdminLoginController::class, 'verify_login']);
 	Route::get('logout', [AdminLoginController::class, 'logout']);
-
 	Route::group(['middleware' => ['auth:admin']], function () {
 
 		Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
