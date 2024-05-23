@@ -15,6 +15,7 @@ use App\Mail\VerificationMail;
 use App\Mail\ContactMail;
 use App\Mail\ResetMail;
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Support\Facades\Log;
 
 
@@ -236,6 +237,77 @@ class UserAuthController extends Controller
             $queryTwo = $user->save();
         }
         return response()->json(['msg' => 'success', 'response' => 'Profile updated successfully.', 'user' => $user]);
+    }
+    // user set up account function
+    public function update_profile_account_set_up(Request $request){
+        Log::info('Received image upload request', ['data' => $request->all()]);
+        $data = $request->all();
+        $validator = Validator::make($data, [
+            'name' => 'required',
+            'gender' => 'required',
+            'phone_no' => 'required',
+            'date_of_birth' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(array('msg' => 'error', 'response' => $validator->errors(), 422));
+        }
+        $user = auth()->user();
+        isset($data['name']) ? $user->name = $data['name'] : $user->name = $user->name;
+        if (isset($data['phone_no'])) {
+            $data['phone_no'] = $this->patternizePhone($data['phone_no']);
+            $user->phone_no = $data['phone_no'];
+            $user->otp = NULL;
+        }
+        $dateOfBirth = DateTime::createFromFormat('m/d/Y',$data['date_of_birth']);
+        if($dateOfBirth !== false){
+            $mysqlDateTime = $dateOfBirth->format('Y-m-d H:i:s');
+            $user->date_of_birth = $mysqlDateTime;
+        }else{
+            return response()->json([
+                'message' => 'Invalid date format'
+            ],405);
+        }
+
+        $user->name = $data['name'];
+        $user->gender = $data['gender'];
+        $user->nick_name = $data['nick_name'];
+        $query = $user->save();
+
+        if ($request->hasFile('image')) {
+            if ($user->image_name != null && $user->image_name != 'user.png') {
+                $image_path = public_path('assets/upload_images/') . '/' . $user->image_name;
+                if (file_exists($image_path)) {
+                    unlink($image_path);
+                }
+            }
+            $image = $request->file('image');
+            $file_name = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+            $extension = $image->getClientOriginalExtension();
+            $data['image_name'] = 'dp_' . time() . '.' . $extension;
+
+
+            $destinationPath = public_path('assets/upload_images/');
+            $image->move($destinationPath, $data['image_name']);
+            $data['image_path'] = url('/public/assets/upload_images/') . '/' . $data['image_name'];
+            $user->image_name = $data['image_name'];
+            $queryTwo = $user->save();
+        }
+        return response()->json(['msg' => 'success', 'response' => 'Profile updated successfully.', 'user' => $user]);
+    }
+    public function setupPinUserAccount (Request $request){
+        $data = $request->all();
+        $validator = Validator::make($data, [
+            'pin_number' => 'required',
+        ]);
+        $pin_number = $data['pin_number'];
+        if(strlen($pin_number) !== 4){
+            return response()->json(['message' => 'pin number must be 4 characters'],405);
+        }
+        $user = auth()->user();
+        $user->pin_number = $data['pin_number'];
+        $query = $user->save();
+        return response()->json(['message' => 'success', 'response' => 'account pin updated successfully.', 'user' => $user]);
     }
     public function send_update_phone_otp(Request $request)
     {
