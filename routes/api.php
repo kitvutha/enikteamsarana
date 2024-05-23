@@ -55,8 +55,7 @@ Route::group(['middleware' => 'api'], function ($router) {
         Route::get('show-subcategory-posts/{subcategory_id}', [ProductPostController::class, 'showSubCategoryPosts']);
         Route::get('show-category-posts/{category_id}', [ProductPostController::class, 'showCategoryPosts']);
         Route::get('show-city-posts/{city_id}', [ProductPostController::class, 'showCityPosts']);
-        Route::get('/search', [ProductRequestController::class, 'searchProduct']);
-        
+        Route::get('/search', [ProductPostController::class, 'searchProductPost']);
         // Only For Authenticated Users
         Route::post('store', [ProductPostController::class, 'store']);
         Route::post('deactivate', [ProductPostController::class, 'deactivate']);
@@ -73,6 +72,7 @@ Route::group(['middleware' => 'api'], function ($router) {
         Route::get('show-subcategory-requests/{subcategory_id}', [ProductRequestController::class, 'showSubCategoryRequests']);
         Route::get('show-category-requests/{category_id}', [ProductRequestController::class, 'showCategoryRequests']);
         Route::get('show-city-requests/{city_id}', [ProductRequestController::class, 'showCityRequests']);
+        Route::get('/search', [ProductRequestController::class, 'searchProduct']);
 
         // Only For Authenticated Users
         Route::post('store', [ProductRequestController::class, 'store']);
