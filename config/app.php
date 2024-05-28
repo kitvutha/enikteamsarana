@@ -1,7 +1,18 @@
 <?php
 
+use Illuminate\Console\View\Components\Warn;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
+if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
+    $protocol = 'https://';
+} else {
+    $protocol = 'http://';
+}
+// Get the server address
+$server_address = $_SERVER['HTTP_HOST'];
+
+// Construct the URL
+$server_url = $protocol . $server_address;
 
 return [
 
@@ -56,9 +67,9 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost'),
-
-    // 'asset_url' => env('ASSET_URL'),
-    'asset_url' => 'http://localhost/mandilinks/public/',
+    
+    'asset_url' => $server_url,
+    // 'asset_url' => 'http://localhost/mandilinks/public/',
 
     /*
     |--------------------------------------------------------------------------
