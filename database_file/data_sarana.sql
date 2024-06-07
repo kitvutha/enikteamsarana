@@ -40,6 +40,7 @@ CREATE TABLE `admin_users` (
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
+
 --
 -- Dumping data for table `admin_users`
 --
@@ -134,7 +135,46 @@ INSERT INTO `categories` (`id`, `title`, `image`, `parent_id`, `status`, `create
 (49, 'Cooking Oil', '1703751810.jfif', 12, 1, '2023-12-28 03:23:29', '2023-12-28 03:23:30'),
 (53, 'Desi Eggs', '1704187845.jfif', 11, 1, '2024-01-02 04:30:45', '2024-01-02 04:30:45');
 
--- --------------------------------------------------------
+--
+-- Table structure for table `table_product`
+--
+
+CREATE TABLE `table_product` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `name` varchar(255) DEFAULT NULL,
+ `description` text DEFAULT NULL,
+ `image` varchar(255) DEFAULT NULL,
+ `price` decimal(10, 2) DEFAULT NULL,
+ `company_id` int(11) DEFAULT NULL,
+`category_id` int(11) DEFAULT NULL,
+ `size` varchar(255) DEFAULT NULL,
+  `color` varchar(255) DEFAULT NULL,
+ `stock` int(11) DEFAULT NULL,
+ `discount_type` varchar(50) DEFAULT NULL, -- 'percentage' or 'fixed'
+ `discount_value` decimal(10, 2) DEFAULT NULL,
+ `start_date_discount` datetime DEFAULT NULL,
+ `end_date_discount` datetime DEFAULT NULL,
+ `created_at` datetime DEFAULT NULL,
+ `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+
+-- --
+-- -- Table structure for table `table_product`
+-- --
+
+-- CREATE TABLE `table_product_inventory` (
+--   `id` int(11) NOT NULL,
+--   `product_id` INT DEFAULT NULL,
+--   `color` varchar(255) DEFAULT NULL,
+--   `size` varchar(255) DEFAULT NULL,
+--   `quantity` INT DEFAULT NULL,
+--   `created_at` datetime DEFAULT NULL,
+--   `updated_at` datetime DEFAULT NULL
+-- ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+
 
 --
 -- Table structure for table `chats`

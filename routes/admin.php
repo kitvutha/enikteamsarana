@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductPostController;
 use App\Http\Controllers\Admin\ProductRequestController;
 use App\Http\Controllers\Admin\BlogController;
+use App\Http\Controllers\admin\ProductController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix'  =>  'admin'], function () {
@@ -18,7 +19,6 @@ Route::group(['prefix'  =>  'admin'], function () {
 		Route::get('admin', [AdminController::class, 'index']);
 		Route::get('change_password', [AdminController::class, 'change_password']);
 		Route::post('update_password', [AdminController::class, 'update_password']);
-
 		Route::group(['prefix'  =>  'users'], function () {
 			Route::get('/', [UserController::class, 'index']);
 			Route::post('update_statuses', [UserController::class, 'update_statuses']);
@@ -32,6 +32,21 @@ Route::group(['prefix'  =>  'admin'], function () {
 			Route::post('category-show', [CategoryController::class, 'category_show']);
 			Route::post('update-category', [CategoryController::class, 'update_category']);
 		});
+		Route::group(['prefix'  =>  'blogs'], function () {
+			Route::get('/', [BlogController::class, 'index']);
+			Route::get('add', [BlogController::class, 'add_blog']);
+			Route::post('store', [BlogController::class, 'store_blog']);
+			Route::post('delete-blog', [BlogController::class, 'delete_blog']);
+			Route::get('blog-show/{id}', [BlogController::class, 'blog_show']);
+			Route::post('update-blog', [BlogController::class, 'update_blog']);
+		});
+
+		Route::group(['prefix'  =>  'product'], function () {
+			Route::get('/', [ProductController::class, 'index']);
+			Route::post('store', [ProductController::class, 'store']);
+			// Route::post('update_statuses', [ProductPostController::class, 'update_statuses']);
+			// Route::get('detail/{id}', [ProductPostController::class, 'post_details']);
+		});
 
 		Route::group(['prefix'  =>  'product-posts'], function () {
 			Route::get('/', [ProductPostController::class, 'index']);
@@ -43,15 +58,6 @@ Route::group(['prefix'  =>  'admin'], function () {
 			Route::get('/', [ProductRequestController::class, 'index']);
 			Route::post('update_statuses', [ProductRequestController::class, 'update_statuses']);
 			Route::get('detail/{id}', [ProductRequestController::class, 'prod_req_details']);
-		});
-
-		Route::group(['prefix'  =>  'blogs'], function () {
-			Route::get('/', [BlogController::class, 'index']);
-			Route::get('add', [BlogController::class, 'add_blog']);
-			Route::post('store', [BlogController::class, 'store_blog']);
-			Route::post('delete-blog', [BlogController::class, 'delete_blog']);
-			Route::get('blog-show/{id}', [BlogController::class, 'blog_show']);
-			Route::post('update-blog', [BlogController::class, 'update_blog']);
 		});
 	});
 });
