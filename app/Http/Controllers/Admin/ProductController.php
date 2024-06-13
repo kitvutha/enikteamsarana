@@ -11,11 +11,23 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $product = Product::query()->orderBy('created_at', 'desc')->get();
-        //
-        return view('admin.product.index', ['products' => $product]);
+        $productsQuery = Product::query()->orderBy('created_at', 'desc');
+
+        $search_query = $request->input('search_query');
+
+        if ($search_query) {
+            $productsQuery->where('name', 'like', '%' . $search_query . '%');
+        }
+
+        $products = $productsQuery->get();
+        
+            // if (empty($search_query)) {
+            //     return redirect()->route('admin.product.index');
+            // }
+
+        return view('admin.product.index', ['products' => $products]);
     }
 
     /**
@@ -45,14 +57,14 @@ class ProductController extends Controller
         foreach ($imageFiles as $key => $file) {
             $name = time() . '.' . $file->getClientOriginalName();
         }
-         // Convert file names to a comma-separated string
-         $fileNames = [];
-         foreach ($imageFiles as $file) {
+        // Convert file names to a comma-separated string
+        $fileNames = [];
+        foreach ($imageFiles as $file) {
             $image_name = time() . '.' . $file->getClientOriginalExtension();
             $destinationPath = public_path('/uploads/categories/');
             $file->move($destinationPath, $image_name);
             $fileNames[] = $image_name;
-         }
+        }
         $fileNamesString = implode(', ', $fileNames);
         $product->image = $fileNamesString;
         $product->stock = $data['stock'];

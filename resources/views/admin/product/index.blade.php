@@ -20,19 +20,34 @@
         </a>
     </div>
 </div>
-<div class="wrapper wrapper-content animated fadeInRight">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="ibox">
-                <div class="ibox-content">
-                    <div class="table-responsive">
+<div class="wrapper wrapper-content animated fadeInRight" style="height:calc(100vh - 219px);">
+    <div class="row" style="height:100%">
+        <div class="col-lg-12"style="height:100%">
+            <div class="ibox"style="height:100%">
+                <div class="ibox-content" style="max-height: 100%;">
+                <form id="search_form" action="{{url('admin/product')}}" method="GET" enctype="multipart/form-data">
+                        <div class="form-group row justify-content-end">
+                            <div class="col-sm-6">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="search_query" placeholder="Search by product name" value="{{ old('search_query', $searchParams['search_query'] ?? '') }}">
+                                    <span class="input-group-append">
+                                        <button type="submit" class="btn btn-primary">Search</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                </form>
+                    <div class="table-responsive" style="max-height: 100%;">
                         <table id="manage_tbl" class="table table-striped table-bordered dt-responsive"
-                            style="width:100%">
+                            style="width:100%" style="max-height: 100%;overflow-y:auto">
                             <thead>
                                 <tr>
                                     <th>Sr #</th>
                                     <th>Product Name</th>
-                                    <th>Description</th>
+                                    <th>Price</th>
+                                    <th>Stock</th>
+                                    <th>Color</th>
+                                    <th>Size</th>
                                     <th>Creation Date</th>
                                     <th>Action</th>
                                 </tr>
@@ -43,12 +58,15 @@
                                     <tr class="gradeX">
                                         <td>{{ $i++ }}</td>
                                         <td>{{$item->name}}</td>
-                                        <td>{{$item->description}}</td>
+                                        <td>{{$item->price . "$"}}</td>
+                                        <td>{{$item->stock}}</td>
+                                        <td>{{$item->color}}</td>
+                                        <td>{{$item->size}}</td>
                                         <!-- <td>
-                                                                                                                                    <img class="img-responsive"
-                                                                                                                                        src="{{asset('uploads/products/' . $item['image'])}}" alt="logo"
-                                                                                                                                        style="width: 241px;">
-                                                                                                                                </td> -->
+                                                                                                                                        <img class="img-responsive"
+                                                                                                                                            src="{{asset('uploads/products/' . $item['image'])}}" alt="logo"
+                                                                                                                                            style="width: 241px;">
+                                                                                                                                    </td> -->
                                         <td>{{ date_formated($item->created_at)}}</td>
                                         <td>
                                             <button class="btn btn-primary btn-sm btn_cat_edit" data-id="{{$item->id}}"
@@ -128,8 +146,8 @@
                     <div class="form-group row">
                         <label class="col-sm-4 col-form-label"><strong>Image</strong></label>
                         <div class="col-sm-8">
-                            <input type="file" name="images" id="images" class="form-control"
-                                accept=".png, .jpeg, .jpg" multiple>
+                            <input type="file" name="images" id="images" class="form-control" accept=".png, .jpeg, .jpg"
+                                multiple>
                         </div>
                     </div>
                     <div class="form-group row">

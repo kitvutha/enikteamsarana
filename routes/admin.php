@@ -42,7 +42,8 @@ Route::group(['prefix'  =>  'admin'], function () {
 		});
 
 		Route::group(['prefix'  =>  'product'], function () {
-			Route::get('/', [ProductController::class, 'index']);
+			// Route::get('/', [ProductController::class, 'index']);
+			Route::get('/', [ProductController::class, 'index'])->name('admin.product.index');
 			Route::post('store', [ProductController::class, 'store']);
 			// Route::post('update_statuses', [ProductPostController::class, 'update_statuses']);
 			// Route::get('detail/{id}', [ProductPostController::class, 'post_details']);
