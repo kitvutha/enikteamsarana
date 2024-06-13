@@ -35,14 +35,26 @@ class ProductController extends Controller
     {
         $data = $request->all();
         $product = new Product();
-        if ($request->hasFile('image')) {
-            $images = $request->file('image');
-
-            foreach ($images as $image) {
-                $image_name = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-                error_log($image_name);
+        $allFiles = $request->allFiles();
+        $imageFiles = [];
+        foreach ($allFiles as $key => $file) {
+            if (str_starts_with($key, 'image-')) {
+                $imageFiles[$key] = $file;
             }
         }
+        foreach ($imageFiles as $key => $file) {
+            $name = time() . '.' . $file->getClientOriginalName();
+        }
+         // Convert file names to a comma-separated string
+         $fileNames = [];
+         foreach ($imageFiles as $file) {
+            $image_name = time() . '.' . $file->getClientOriginalExtension();
+            $destinationPath = public_path('/uploads/categories/');
+            $file->move($destinationPath, $image_name);
+            $fileNames[] = $image_name;
+         }
+        $fileNamesString = implode(', ', $fileNames);
+        $product->image = $fileNamesString;
         $product->stock = $data['stock'];
         $product->size = $data['size'];
         $product->price = $data['price'];
@@ -58,7 +70,12 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
+        $data = $product->all();
+        $id = $data['id'];
+        $category = Product::where('id', $id)->first();
+        $htmlresult = view('admin/product/edit', compact('category', 'parent_categories'))->render();
+        $finalResult = response()->json(['msg' => 'success', 'response' => $htmlresult]);
+        return $finalResult;
     }
 
     /**

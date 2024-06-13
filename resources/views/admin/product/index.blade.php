@@ -45,10 +45,10 @@
                                         <td>{{$item->name}}</td>
                                         <td>{{$item->description}}</td>
                                         <!-- <td>
-                                                                                                                                <img class="img-responsive"
-                                                                                                                                    src="{{asset('uploads/products/' . $item['image'])}}" alt="logo"
-                                                                                                                                    style="width: 241px;">
-                                                                                                                            </td> -->
+                                                                                                                                    <img class="img-responsive"
+                                                                                                                                        src="{{asset('uploads/products/' . $item['image'])}}" alt="logo"
+                                                                                                                                        style="width: 241px;">
+                                                                                                                                </td> -->
                                         <td>{{ date_formated($item->created_at)}}</td>
                                         <td>
                                             <button class="btn btn-primary btn-sm btn_cat_edit" data-id="{{$item->id}}"
@@ -128,9 +128,10 @@
                     <div class="form-group row">
                         <label class="col-sm-4 col-form-label"><strong>Image</strong></label>
                         <div class="col-sm-8">
-                            <input type="file" name="image" class="form-control" accept=".png, .jpeg, .jpg" multiple>
+                            <input type="file" name="images" id="images" class="form-control"
+                                accept=".png, .jpeg, .jpg" multiple>
                         </div>
-                    </div>  
+                    </div>
                     <div class="form-group row">
                         <label class="col-sm-4 col-form-label"><strong>description</strong></label>
                         <div class="col-sm-8">
@@ -145,6 +146,13 @@
                 <button type="button" class="btn btn-primary" id="save_cat_button" type="submit" form="add_product_form"
                     value="submit"> Submit </button>
             </div>
+        </div>
+    </div>
+</div>
+<div class="modal inmodal show fade" id="edit_modalbox" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content animated flipInY" id="edit_modalbox_body">
         </div>
     </div>
 </div>
@@ -271,9 +279,18 @@
                 formData.delete('size');
                 formData.append('size', itemsString);
             }
-            for (var pair of formData.entries()) {
-                console.log(pair[0] + ': ' + pair[1]);
+            let files = [];
+            for (const [key, value] of formData.entries()) {
+                if (key === 'images') {
+                    files.push(value);
+                }
             }
+            formData.delete('images');
+            for (let i = 0; i < files.length; i++) {
+                formData.append('image-' + i, files[i]);
+            }
+            // const files = document.getElementById('images').value;
+            // console.log(files);
             $.ajax({
                 url: "{{ url('admin/product/store') }}",
                 type: 'POST',
